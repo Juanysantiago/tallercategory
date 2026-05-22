@@ -1,4 +1,7 @@
 // controllers/productController.js
+// Este archivo contiene las funciones para manejar productos:
+// ver, crear, actualizar y eliminar.
+// También valida el número de documento para permitir o bloquear el acceso según reglas específicas.
 
 import { productModel } from "../models/productModel.js";
 
@@ -10,6 +13,7 @@ export const getProducts = async (req, res) => {
 
     const document = req.query.document;
 
+    // Validar que se envíe el documento
     if (!document) {
       return res.status(400).json({
         ok: false,
@@ -17,16 +21,14 @@ export const getProducts = async (req, res) => {
       });
     }
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    // Obtener el último número del documento
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // PRODUCT SOLO IMPAR
+    // Regla: PRODUCT solo permite documentos impares
     if (lastNumber % 2 === 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Este documento no puede acceder a PRODUCT porque termina en par",
+        message: "Este documento no puede acceder a PRODUCT porque termina en par",
       });
     }
 
@@ -56,16 +58,13 @@ export const getProductById = async (req, res) => {
 
     const document = req.query.document;
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // SOLO IMPAR
+    // Regla: solo documentos impares pueden acceder
     if (lastNumber % 2 === 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Acceso denegado para PRODUCT",
+        message: "Acceso denegado para PRODUCT",
       });
     }
 
@@ -103,16 +102,13 @@ export const createProduct = async (req, res) => {
 
     const { document, ...data } = req.body;
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // SOLO IMPAR
+    // Regla: solo documentos impares pueden crear
     if (lastNumber % 2 === 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Solo documentos impares pueden usar PRODUCT",
+        message: "Solo documentos impares pueden usar PRODUCT",
       });
     }
 
@@ -141,16 +137,13 @@ export const updateProduct = async (req, res) => {
 
     const { document, ...data } = req.body;
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // SOLO IMPAR
+    // Regla: solo documentos impares pueden actualizar
     if (lastNumber % 2 === 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Solo documentos impares pueden actualizar PRODUCT",
+        message: "Solo documentos impares pueden actualizar PRODUCT",
       });
     }
 
@@ -191,16 +184,13 @@ export const deleteProduct = async (req, res) => {
 
     const document = req.query.document;
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // SOLO IMPAR
+    // Regla: solo documentos impares pueden eliminar
     if (lastNumber % 2 === 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Solo documentos impares pueden eliminar PRODUCT",
+        message: "Solo documentos impares pueden eliminar PRODUCT",
       });
     }
 

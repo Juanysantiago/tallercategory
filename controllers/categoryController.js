@@ -1,4 +1,7 @@
 // controllers/categoryController.js
+// Este archivo contiene las funciones que manejan las acciones de categorías:
+// ver, crear, actualizar y eliminar.
+// También valida el número de documento para permitir o bloquear el acceso según ciertas reglas.
 
 import { categoryModel } from "../models/categoryModel.js";
 
@@ -8,10 +11,10 @@ import { categoryModel } from "../models/categoryModel.js";
 export const getCategories = async (req, res) => {
   try {
 
-    // Documento enviado por query
+    // Se recibe el documento por query (en la URL)
     const document = req.query.document;
 
-    // Validar que exista
+    // Validar que se envíe el documento
     if (!document) {
       return res.status(400).json({
         ok: false,
@@ -19,18 +22,14 @@ export const getCategories = async (req, res) => {
       });
     }
 
-    // Último número del documento
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    // Se toma el último número del documento
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // VALIDACIÓN
-    // CATEGORY SOLO PARA PAR
+    // Regla: solo documentos que terminen en número par pueden acceder
     if (lastNumber % 2 !== 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Este documento no puede acceder a CATEGORY porque termina en impar",
+        message: "Este documento no puede acceder a CATEGORY porque termina en impar",
       });
     }
 
@@ -67,16 +66,13 @@ export const getCategoryById = async (req, res) => {
       });
     }
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // SOLO PAR
+    // Regla: solo documentos pares pueden acceder
     if (lastNumber % 2 !== 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Acceso denegado para CATEGORY",
+        message: "Acceso denegado para CATEGORY",
       });
     }
 
@@ -114,16 +110,13 @@ export const createCategory = async (req, res) => {
 
     const { document, ...data } = req.body;
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // SOLO PAR
+    // Regla: solo documentos pares pueden crear
     if (lastNumber % 2 !== 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Solo documentos pares pueden usar CATEGORY",
+        message: "Solo documentos pares pueden usar CATEGORY",
       });
     }
 
@@ -152,16 +145,13 @@ export const updateCategory = async (req, res) => {
 
     const { document, ...data } = req.body;
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // SOLO PAR
+    // Regla: solo documentos pares pueden actualizar
     if (lastNumber % 2 !== 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Solo documentos pares pueden actualizar CATEGORY",
+        message: "Solo documentos pares pueden actualizar CATEGORY",
       });
     }
 
@@ -202,16 +192,13 @@ export const deleteCategory = async (req, res) => {
 
     const document = req.query.document;
 
-    const lastNumber = parseInt(
-      document.toString().slice(-1)
-    );
+    const lastNumber = parseInt(document.toString().slice(-1));
 
-    // SOLO PAR
+    // Regla: solo documentos pares pueden eliminar
     if (lastNumber % 2 !== 0) {
       return res.status(403).json({
         ok: false,
-        message:
-          "Solo documentos pares pueden eliminar CATEGORY",
+        message: "Solo documentos pares pueden eliminar CATEGORY",
       });
     }
 
